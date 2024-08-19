@@ -10,6 +10,140 @@ To install this package use npm:
 npm install react-permission-toolkit
 ```
 
+## Usage
+
+### Wrap Your React App
+
+First, wrap your application with the `PermissionProvider` to provide the necessary permissions context:
+
+```tsx
+// index.tsx
+import React from 'react';
+import ReactDOM from 'react-dom/client';
+import { PermissionProvider } from 'react-permission-toolkit';
+import App from './App';
+
+const permissions = ['read', 'write']; // Define your permissions here
+
+const root = ReactDOM.createRoot(document.getElementById('root') as HTMLElement);
+root.render(
+    <PermissionProvider permissions={permissions}>
+        <App />
+    </PermissionProvider>,
+    document.getElementById('root')
+);
+```
+
+### Use the HOC
+
+The `withPermission` higher-order component (HOC) allows you to conditionally render components based on user permissions:
+
+```tsx
+// App.tsx
+import React from 'react';
+import { withPermission } from 'react-permission-toolkit';
+
+function SecretComponent() {
+    return <div>Secret Information</div>;
+}
+
+function NoAccessComponent() {
+    return <div>You do not have access to this information</div>;
+}
+
+const SecretComponentWithPermission = withPermission('read', NoAccessComponent)(SecretComponent);
+
+function App() {
+    return (
+        <div>
+            <h1>My Application</h1>
+            <SecretComponentWithPermission />
+        </div>
+    );
+}
+
+export default App;
+```
+
+In this example, `SecretComponent` will only be rendered if the user has the `read` permission. If the user does not have the `read` permission, the `NoAccessComponent` will be rendered instead.
+
+### Use the Hook
+
+The `useHasPermission` hook allows you to check for specific permissions within your components:
+
+```tsx
+// App.tsx
+import React from 'react';
+import { useHasPermission } from 'react-permission-toolkit';
+
+function PermissionBasedComponent() {
+    const hasReadPermission = useHasPermission('read');
+
+    return (
+        <div>
+            {hasReadPermission ? (
+                <div>You have read permission</div>
+            ) : (
+                <div>You do not have read permission</div>
+            )}
+        </div>
+    );
+}
+
+function App() {
+    return (
+        <div>
+            <h1>My Application</h1>
+            <PermissionBasedComponent />
+        </div>
+    );
+}
+
+export default App;
+```
+
+In this example, `PermissionBasedComponent` uses the `useHasPermission` hook to check if the user has the `read` permission and conditionally renders content based on the result.
+
+### Combining Both Methods
+
+To combine both the Higher-Order Component (HOC) `withPermission` and the `useHasPermission` hook, you can use the HOC to wrap a component and then use the hook within that component to check for additional permissions or perform other permission-related logic.
+
+```tsx
+// App.tsx
+import React from 'react';
+import { useHasPermission, withPermission } from 'react-permission-toolkit';
+
+function SecretComponent() {
+    const hasWritePermission = useHasPermission('write');
+
+    return (
+        <div>
+            <div>Secret Information</div>
+            {hasWritePermission && <div>You have write access</div>}
+        </div>
+    );
+}
+
+function NoAccessComponent() {
+    return <div>You do not have access to this information</div>;
+}
+
+const SecretComponentWithPermission = withPermission('read', NoAccessComponent)(SecretComponent);
+
+function App() {
+    return (
+        <div>
+            <h1>My Application</h1>
+            <SecretComponentWithPermission />
+        </div>
+    );
+}
+
+export default App;
+```
+
+In this example, the `SecretComponent` is wrapped with the `withPermission` HOC to check for the `read` permission. Inside that component, the `useHasPermission` hook is used to check for the `write` permission and conditionally render additional content.
+
 ## Local Development
 
 For local development, use Yalc to install this package in your project.
