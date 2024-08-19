@@ -12,9 +12,9 @@ npm install react-permission-toolkit
 
 ## Usage
 
-### Wrap Your React App
+### Wrapping the React Application
 
-First, wrap your application with the `PermissionProvider` to provide the necessary permissions context:
+To provide the necessary permissions context throughout the application, wrap the root component with `PermissionProvider`:
 
 ```tsx
 // index.tsx
@@ -23,10 +23,10 @@ import ReactDOM from 'react-dom/client';
 import { PermissionProvider } from 'react-permission-toolkit';
 import App from './App';
 
-// Define your permissions here
-const permissions = ['read', 'write']; 
+// Define the user's permissions
+const permissions = ['read', 'write'];
 
-// Define a optional callback function that is called when a permission check fails.
+// Optional: Define a callback function to handle permission errors
 const onPermissionError = (permission: string) => {
     console.error(`Permission error: ${permission} is not granted.`);
 };
@@ -40,9 +40,9 @@ root.render(
 );
 ```
 
-### Use the HOC
+### Using the Higher-Order Component (HOC)
 
-The `withPermission` higher-order component (HOC) allows you to conditionally render components based on user permissions:
+The `withPermission` HOC conditionally renders components based on user permissions:
 
 ```tsx
 // App.tsx
@@ -71,11 +71,11 @@ function App() {
 export default App;
 ```
 
-In this example, `SecretComponent` will only be rendered if the user has the `read` permission. If the user does not have the `read` permission, the `NoAccessComponent` will be rendered instead.
+In this example, `SecretComponent` is only rendered if the user has the `read` permission. If the `read` permission is not granted, `NoAccessComponent` is displayed instead.
 
-### Use the Hook
+### Using the Hook
 
-The `useHasPermission` hook allows you to check for specific permissions within your components:
+The `useHasPermission` hook checks for specific permissions within components:
 
 ```tsx
 // App.tsx
@@ -108,11 +108,11 @@ function App() {
 export default App;
 ```
 
-In this example, `PermissionBasedComponent` uses the `useHasPermission` hook to check if the user has the `read` permission and conditionally renders content based on the result.
+Here, `PermissionBasedComponent` uses the `useHasPermission` hook to check if the `read` permission is granted, rendering different content based on the result.
 
-### Combining Both Methods
+### Combining the HOC and Hook
 
-To combine both the Higher-Order Component (HOC) `withPermission` and the `useHasPermission` hook, you can use the HOC to wrap a component and then use the hook within that component to check for additional permissions or perform other permission-related logic.
+For more complex scenarios, combine the `withPermission` HOC and `useHasPermission` hook. This allows wrapping a component with the HOC for initial permission checks, while still using the hook for further permission-based logic within the component:
 
 ```tsx
 // App.tsx
@@ -148,7 +148,7 @@ function App() {
 export default App;
 ```
 
-In this example, the `SecretComponent` is wrapped with the `withPermission` HOC to check for the `read` permission. Inside that component, the `useHasPermission` hook is used to check for the `write` permission and conditionally render additional content.
+In this example, `SecretComponent` is first wrapped with `withPermission` to ensure the user has the `read` permission. Inside the component, the `useHasPermission` hook checks for the write permission to conditionally render additional content.
 
 ## Local Development
 
