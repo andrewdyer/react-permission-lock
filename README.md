@@ -2,11 +2,6 @@
 
 A package for managing and enforcing permissions in React applications.
 
-## Installation
-
-```sh
-npm install react-permission-toolkit
-
 ## Getting Started
 
 To install this package use npm:
