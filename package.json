@@ -1,6 +1,6 @@
 {
     "name": "react-permission-toolkit",
-    "description": "A template for creating React packages",
+    "description": "A package for managing and enforcing permissions in React applications",
     "version": "1.0.0",
     "main": "dist/cjs/index.js",
     "module": "dist/esm/index.js",

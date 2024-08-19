@@ -1,6 +1,11 @@
 # React Permission Toolkit
 
-A template for creating React packages.
+A package for managing and enforcing permissions in React applications.
+
+## Installation
+
+```sh
+npm install react-permission-toolkit
 
 ## Getting Started
 
