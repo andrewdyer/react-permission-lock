@@ -20,8 +20,10 @@ describe('PermissionContext', () => {
     });
 
     test('should provide the correct context value', () => {
+        const hasPermission = jest.fn();
+
         render(
-            <PermissionContext.Provider value={{ permissions: ['read', 'write'] }}>
+            <PermissionContext.Provider value={{ permissions: ['read', 'write'], hasPermission }}>
                 <TestComponent />
             </PermissionContext.Provider>
         );
