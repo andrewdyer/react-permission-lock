@@ -23,11 +23,17 @@ import ReactDOM from 'react-dom/client';
 import { PermissionProvider } from 'react-permission-toolkit';
 import App from './App';
 
-const permissions = ['read', 'write']; // Define your permissions here
+// Define your permissions here
+const permissions = ['read', 'write']; 
+
+// Define a optional callback function that is called when a permission check fails.
+const onPermissionError = (permission: string) => {
+    console.error(`Permission error: ${permission} is not granted.`);
+};
 
 const root = ReactDOM.createRoot(document.getElementById('root') as HTMLElement);
 root.render(
-    <PermissionProvider permissions={permissions}>
+    <PermissionProvider permissions={permissions} onPermissionError={onPermissionError}>
         <App />
     </PermissionProvider>,
     document.getElementById('root')

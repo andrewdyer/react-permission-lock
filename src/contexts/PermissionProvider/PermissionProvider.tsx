@@ -4,12 +4,25 @@ import PermissionContext from '../PermissionContext';
 export interface PermissionProviderProps {
     children: React.ReactNode;
     permissions: string[];
+    onPermissionError?: (permission: string) => void;
 }
 
-const PermissionProvider: React.FC<PermissionProviderProps> = ({ children, permissions }) => {
+const PermissionProvider: React.FC<PermissionProviderProps> = ({
+    children,
+    permissions,
+    onPermissionError
+}) => {
     const hasPermission = React.useMemo(
-        () => (permission: string) => permissions.indexOf(permission) !== -1,
-        [permissions]
+        () => (permission: string) => {
+            const hasPerm = permissions.indexOf(permission) !== -1;
+
+            if (!hasPerm && onPermissionError) {
+                onPermissionError(permission);
+            }
+
+            return hasPerm;
+        },
+        [permissions, onPermissionError]
     );
 
     return (
