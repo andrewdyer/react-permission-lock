@@ -1,4 +1,4 @@
-![React Permission Lock](https://raw.githubusercontent.com/andrewdyer/andrewdyer/refs/heads/main/assets/images/covers/react-permission-lock.png)
+![React Permission Lock](https://raw.githubusercontent.com/andrewdyer/public-assets/refs/heads/main/images/covers/react-permission-lock.png)
 
 # 🔒 React Permission Lock
 
