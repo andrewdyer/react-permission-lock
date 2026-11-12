@@ -1,33 +1,36 @@
-import React from 'react';
 import { render, screen } from '@testing-library/react';
+import { useContext } from 'react';
+
 import PermissionContext from './PermissionContext';
 
 const TestComponent = () => {
-    const context = React.useContext(PermissionContext);
+  const context = useContext(PermissionContext);
 
-    return <div>{context ? context.permissions.join(', ') : 'No Context'}</div>;
+  return <div>{context ? context.permissions.join(', ') : 'No Context'}</div>;
 };
 
 describe('PermissionContext', () => {
-    test('should provide default value as undefined', () => {
-        render(
-            <PermissionContext.Provider value={undefined}>
-                <TestComponent />
-            </PermissionContext.Provider>
-        );
+  test('should provide default value as undefined', () => {
+    render(
+      <PermissionContext.Provider value={undefined}>
+        <TestComponent />
+      </PermissionContext.Provider>
+    );
 
-        expect(screen.getByText('No Context')).toBeInTheDocument();
-    });
+    expect(screen.getByText('No Context')).toBeInTheDocument();
+  });
 
-    test('should provide the correct context value', () => {
-        const hasPermission = jest.fn();
+  test('should provide the correct context value', () => {
+    const hasPermission = vi.fn();
 
-        render(
-            <PermissionContext.Provider value={{ permissions: ['read', 'write'], hasPermission }}>
-                <TestComponent />
-            </PermissionContext.Provider>
-        );
+    render(
+      <PermissionContext.Provider
+        value={{ permissions: ['read', 'write'], hasPermission }}
+      >
+        <TestComponent />
+      </PermissionContext.Provider>
+    );
 
-        expect(screen.getByText('read, write')).toBeInTheDocument();
-    });
+    expect(screen.getByText('read, write')).toBeInTheDocument();
+  });
 });

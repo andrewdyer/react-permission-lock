@@ -1,10 +1,12 @@
-import React from 'react';
+import { createContext } from 'react';
 
 export interface PermissionContextProps {
-    permissions: string[];
-    hasPermission: (permission: string) => boolean;
+  permissions: string[];
+  hasPermission: (permission: string) => boolean;
 }
 
-const PermissionContext = React.createContext<PermissionContextProps | undefined>(undefined);
+const PermissionContext = createContext<PermissionContextProps | undefined>(
+  undefined
+);
 
 export default PermissionContext;

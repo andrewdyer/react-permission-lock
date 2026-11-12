@@ -41,17 +41,23 @@ const permissions = ['read', 'write'];
 
 // Optional: Define a callback function to handle permission errors
 const onPermissionError = (permission: string) => {
-    console.error(`Permission error: ${permission} is not granted.`);
+  console.error(`Permission error: ${permission} is not granted.`);
 };
 
-const root = ReactDOM.createRoot(document.getElementById('root') as HTMLElement);
+const root = ReactDOM.createRoot(
+  document.getElementById('root') as HTMLElement
+);
 root.render(
-    <PermissionProvider permissions={permissions} onPermissionError={onPermissionError}>
-        <App />
-    </PermissionProvider>,
-    document.getElementById('root')
+  <PermissionProvider
+    permissions={permissions}
+    onPermissionError={onPermissionError}
+  >
+    <App />
+  </PermissionProvider>,
+  document.getElementById('root')
 );
 ```
+
 ## 📖 Usage
 
 ### Using the Higher-Order Component (HOC)
@@ -63,22 +69,25 @@ import React from 'react';
 import { withPermission } from 'react-permission-lock';
 
 function SecretComponent() {
-    return <div>Secret Information</div>;
+  return <div>Secret Information</div>;
 }
 
 function NoAccessComponent() {
-    return <div>You do not have access to this information</div>;
+  return <div>You do not have access to this information</div>;
 }
 
-const SecretComponentWithPermission = withPermission('read', NoAccessComponent)(SecretComponent);
+const SecretComponentWithPermission = withPermission(
+  'read',
+  NoAccessComponent
+)(SecretComponent);
 
 function App() {
-    return (
-        <div>
-            <h1>My Application</h1>
-            <SecretComponentWithPermission />
-        </div>
-    );
+  return (
+    <div>
+      <h1>My Application</h1>
+      <SecretComponentWithPermission />
+    </div>
+  );
 }
 
 export default App;
@@ -95,26 +104,26 @@ import React from 'react';
 import { useHasPermission } from 'react-permission-lock';
 
 function PermissionBasedComponent() {
-    const hasReadPermission = useHasPermission('read');
+  const hasReadPermission = useHasPermission('read');
 
-    return (
-        <div>
-            {hasReadPermission ? (
-                <div>You have read permission</div>
-            ) : (
-                <div>You do not have read permission</div>
-            )}
-        </div>
-    );
+  return (
+    <div>
+      {hasReadPermission ? (
+        <div>You have read permission</div>
+      ) : (
+        <div>You do not have read permission</div>
+      )}
+    </div>
+  );
 }
 
 function App() {
-    return (
-        <div>
-            <h1>My Application</h1>
-            <PermissionBasedComponent />
-        </div>
-    );
+  return (
+    <div>
+      <h1>My Application</h1>
+      <PermissionBasedComponent />
+    </div>
+  );
 }
 
 export default App;
@@ -131,29 +140,32 @@ import React from 'react';
 import { useHasPermission, withPermission } from 'react-permission-lock';
 
 function SecretComponent() {
-    const hasWritePermission = useHasPermission('write');
+  const hasWritePermission = useHasPermission('write');
 
-    return (
-        <div>
-            <div>Secret Information</div>
-            {hasWritePermission && <div>You have write access</div>}
-        </div>
-    );
+  return (
+    <div>
+      <div>Secret Information</div>
+      {hasWritePermission && <div>You have write access</div>}
+    </div>
+  );
 }
 
 function NoAccessComponent() {
-    return <div>You do not have access to this information</div>;
+  return <div>You do not have access to this information</div>;
 }
 
-const SecretComponentWithPermission = withPermission('read', NoAccessComponent)(SecretComponent);
+const SecretComponentWithPermission = withPermission(
+  'read',
+  NoAccessComponent
+)(SecretComponent);
 
 function App() {
-    return (
-        <div>
-            <h1>My Application</h1>
-            <SecretComponentWithPermission />
-        </div>
-    );
+  return (
+    <div>
+      <h1>My Application</h1>
+      <SecretComponentWithPermission />
+    </div>
+  );
 }
 
 export default App;
