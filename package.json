@@ -1,13 +1,17 @@
 {
   "name": "react-permission-lock",
-  "description": "A package for managing and enforcing permissions in React applications",
+  "description": "A permissions library for React applications that gates components and checks access via a provider, hook and higher-order component.",
   "version": "2.0.0",
   "keywords": [
+    "typescript",
     "react",
+    "react-dom",
     "permissions",
-    "access control",
+    "access-control",
+    "authorisation",
     "authorization",
-    "typescript"
+    "higher-order-component",
+    "hooks"
   ],
   "author": "Andrew Dyer (https://github.com/andrewdyer)",
   "license": "MIT",

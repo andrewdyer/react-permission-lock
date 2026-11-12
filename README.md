@@ -1,174 +1,94 @@
-![React Permission Lock](https://public-assets.andrewdyer.rocks/images/covers/react-permission-lock.png)
+# React Permission Lock
 
-# 🔒 React Permission Lock
+A permissions library for React applications that gates components and checks access via a provider, hook and higher-order component.
 
-A package for managing and enforcing permissions in React applications.
+## Introduction
 
-## 📄 License
+This library stores the granted permissions as a list of names in a React context supplied by a provider. Each check tests whether a permission is present in that list, and an optional callback is invoked whenever a check fails. Components query access through a hook, which throws when used outside the provider, or are wrapped in a higher-order component that renders a fallback component, or nothing, when the required permission is missing.
 
-Licensed under the [MIT license](https://opensource.org/licenses/MIT) and is free for private or commercial projects.
+## Prerequisites
 
-## ✨ Introduction
+- **[React](https://react.dev/)**: Version 19.2 or later, together with React DOM, installed as peer dependencies.
+- **[Node.js](https://nodejs.org/)**: Version 24.19.0 or later, as specified by the package `engines` field.
 
-React Permission Lock is a lightweight and easy-to-use library for managing permissions in your React applications. It allows you to control access to different parts of your application based on defined permissions, making it easier to enforce security and manage roles.
-
-## 📥 Installation
-
-To install this package use npm:
+## Installation
 
 ```bash
 npm install react-permission-lock
 ```
 
-Or with Yarn:
-
 ```bash
 yarn add react-permission-lock
 ```
 
-## 🚀 Getting Started
-
-To provide the necessary permissions context throughout the application, wrap the root component with `PermissionProvider`:
-
-```tsx
-import React from 'react';
-import ReactDOM from 'react-dom/client';
-import { PermissionProvider } from 'react-permission-lock';
-import App from './App';
-
-// Define the user's permissions
-const permissions = ['read', 'write'];
-
-// Optional: Define a callback function to handle permission errors
-const onPermissionError = (permission: string) => {
-  console.error(`Permission error: ${permission} is not granted.`);
-};
-
-const root = ReactDOM.createRoot(
-  document.getElementById('root') as HTMLElement
-);
-root.render(
-  <PermissionProvider
-    permissions={permissions}
-    onPermissionError={onPermissionError}
-  >
-    <App />
-  </PermissionProvider>,
-  document.getElementById('root')
-);
+```bash
+pnpm add react-permission-lock
 ```
 
-## 📖 Usage
+## Getting Started
 
-### Using the Higher-Order Component (HOC)
+Wrap the application in a permission provider.
 
-The `withPermission` HOC conditionally renders components based on user permissions:
+1. Obtain the current user's permissions as an array of strings:
 
-```tsx
-import React from 'react';
-import { withPermission } from 'react-permission-lock';
+   ```ts
+   const permissions = ['read', 'write'];
+   ```
 
-function SecretComponent() {
-  return <div>Secret Information</div>;
-}
+2. Render `PermissionProvider` at the root of the application, passing the permissions and, optionally, a callback for failed checks:
 
-function NoAccessComponent() {
-  return <div>You do not have access to this information</div>;
-}
+   ```tsx
+   import { createRoot } from 'react-dom/client';
+   import { PermissionProvider } from 'react-permission-lock';
 
-const SecretComponentWithPermission = withPermission(
-  'read',
-  NoAccessComponent
-)(SecretComponent);
+   import App from './App';
 
-function App() {
-  return (
-    <div>
-      <h1>My Application</h1>
-      <SecretComponentWithPermission />
-    </div>
-  );
-}
+   createRoot(document.getElementById('root')!).render(
+     <PermissionProvider
+       permissions={permissions}
+       onPermissionError={(permission) =>
+         console.error(`Permission not granted: ${permission}`)
+       }
+     >
+       <App />
+     </PermissionProvider>
+   );
+   ```
 
-export default App;
-```
+## Usage
 
-In this example, `SecretComponent` is only rendered if the user has the `read` permission. If the `read` permission is not granted, `NoAccessComponent` is displayed instead.
+Permissions are checked with a hook or enforced declaratively with a higher-order component.
 
-### Using the Hook
+### Checking a permission with the hook
 
-The `useHasPermission` hook checks for specific permissions within components:
+`useHasPermission` returns `true` when the named permission has been granted. It must be called within a `PermissionProvider`.
 
 ```tsx
-import React from 'react';
 import { useHasPermission } from 'react-permission-lock';
 
-function PermissionBasedComponent() {
-  const hasReadPermission = useHasPermission('read');
+const DocumentActions = () => {
+  const canWrite = useHasPermission('write');
 
-  return (
-    <div>
-      {hasReadPermission ? (
-        <div>You have read permission</div>
-      ) : (
-        <div>You do not have read permission</div>
-      )}
-    </div>
-  );
-}
-
-function App() {
-  return (
-    <div>
-      <h1>My Application</h1>
-      <PermissionBasedComponent />
-    </div>
-  );
-}
-
-export default App;
+  return canWrite ? <button type="button">Edit</button> : null;
+};
 ```
 
-Here, `PermissionBasedComponent` uses the `useHasPermission` hook to check if the `read` permission is granted, rendering different content based on the result.
+### Gating a component with the higher-order component
 
-### Combining the HOC and Hook
-
-For more complex scenarios, combine the `withPermission` HOC and `useHasPermission` hook. This allows wrapping a component with the HOC for initial permission checks, while still using the hook for further permission-based logic within the component:
+`withPermission` renders the wrapped component only when the required permission is granted. An optional fallback component is rendered, without props, when it is not.
 
 ```tsx
-import React from 'react';
-import { useHasPermission, withPermission } from 'react-permission-lock';
+import { withPermission } from 'react-permission-lock';
 
-function SecretComponent() {
-  const hasWritePermission = useHasPermission('write');
+const Report = () => <div>Confidential report</div>;
 
-  return (
-    <div>
-      <div>Secret Information</div>
-      {hasWritePermission && <div>You have write access</div>}
-    </div>
-  );
-}
+const NoAccess = () => <div>Access denied</div>;
 
-function NoAccessComponent() {
-  return <div>You do not have access to this information</div>;
-}
-
-const SecretComponentWithPermission = withPermission(
-  'read',
-  NoAccessComponent
-)(SecretComponent);
-
-function App() {
-  return (
-    <div>
-      <h1>My Application</h1>
-      <SecretComponentWithPermission />
-    </div>
-  );
-}
-
-export default App;
+export default withPermission('read', NoAccess)(Report);
 ```
 
-In this example, `SecretComponent` is first wrapped with `withPermission` to ensure the user has the `read` permission. Inside the component, the `useHasPermission` hook checks for the write permission to conditionally render additional content.
+Without a fallback, nothing is rendered when the permission is missing. In either case, the provider's `onPermissionError` callback receives the permission name.
+
+## License
+
+Licensed under the [MIT License](LICENSE).
