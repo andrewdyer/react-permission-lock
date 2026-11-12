@@ -1,40 +1,47 @@
-import React from 'react';
 import { renderHook } from '@testing-library/react';
-import { PermissionProvider } from '../../contexts';
+import type { ReactNode } from 'react';
+
 import useHasPermission from './useHasPermission';
+import { PermissionProvider } from '../../contexts';
 
 describe('useHasPermission', () => {
-    test('should return true if the required permission is present', () => {
-        const wrapper = ({ children }: { children: React.ReactNode }) => (
-            <PermissionProvider permissions={['read', 'write']}>{children}</PermissionProvider>
-        );
+  test('should return true if the required permission is present', () => {
+    const wrapper = ({ children }: { children: ReactNode }) => (
+      <PermissionProvider permissions={['read', 'write']}>
+        {children}
+      </PermissionProvider>
+    );
 
-        const { result } = renderHook(() => useHasPermission('read'), { wrapper });
+    const { result } = renderHook(() => useHasPermission('read'), { wrapper });
 
-        expect(result.current).toBe(true);
+    expect(result.current).toBe(true);
+  });
+
+  test('should return false if the required permission is not present', () => {
+    const wrapper = ({ children }: { children: ReactNode }) => (
+      <PermissionProvider permissions={['read', 'write']}>
+        {children}
+      </PermissionProvider>
+    );
+
+    const { result } = renderHook(() => useHasPermission('delete'), {
+      wrapper,
     });
 
-    test('should return false if the required permission is not present', () => {
-        const wrapper = ({ children }: { children: React.ReactNode }) => (
-            <PermissionProvider permissions={['read', 'write']}>{children}</PermissionProvider>
-        );
+    expect(result.current).toBe(false);
+  });
 
-        const { result } = renderHook(() => useHasPermission('delete'), { wrapper });
+  test('should throw an error if used outside of PermissionProvider', () => {
+    let error;
 
-        expect(result.current).toBe(false);
-    });
+    try {
+      renderHook(() => useHasPermission('read'));
+    } catch (e) {
+      error = e;
+    }
 
-    test('should throw an error if used outside of PermissionProvider', () => {
-        let error;
-
-        try {
-            renderHook(() => useHasPermission('read'));
-        } catch (e) {
-            error = e;
-        }
-
-        expect(error).toEqual(
-            new Error('useHasPermission must be used within a PermissionProvider')
-        );
-    });
+    expect(error).toEqual(
+      new Error('useHasPermission must be used within a PermissionProvider')
+    );
+  });
 });
