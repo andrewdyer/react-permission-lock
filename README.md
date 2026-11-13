@@ -9,7 +9,6 @@ This library stores the granted permissions as a list of names in a React contex
 ## Prerequisites
 
 - **[React](https://react.dev/)**: Version 19.2 or later, together with React DOM, installed as peer dependencies.
-- **[Node.js](https://nodejs.org/)**: Version 24.19.0 or later, as specified by the package `engines` field.
 
 ## Installation
 
