@@ -1,5 +1,12 @@
 # Changelog
 
+## [2.0.1](https://github.com/andrewdyer/react-permission-lock/compare/v2.0.0...v2.0.1) (2026-11-13)
+
+
+### Bug Fixes
+
+* bundle type declarations so nodenext consumers resolve them ([a3d1dc8](https://github.com/andrewdyer/react-permission-lock/commit/a3d1dc87377373495f055baea829c2ab7cc09a1f))
+
 ## [2.0.0](https://github.com/andrewdyer/react-permission-lock/compare/1.1.0...v2.0.0) (2026-11-12)
 
 
