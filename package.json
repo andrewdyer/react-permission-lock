@@ -1,7 +1,7 @@
 {
   "name": "react-permission-lock",
   "description": "A permissions library for React applications that gates components and checks access via a provider, hook and higher-order component.",
-  "version": "2.0.0",
+  "version": "2.0.1",
   "keywords": [
     "typescript",
     "react",
