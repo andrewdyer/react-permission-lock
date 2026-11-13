@@ -1,5 +1,12 @@
 # Changelog
 
+## [2.0.2](https://github.com/andrewdyer/react-permission-lock/compare/v2.0.1...v2.0.2) (2026-11-13)
+
+
+### Bug Fixes
+
+* drop node engines constraint from published package ([03973b2](https://github.com/andrewdyer/react-permission-lock/commit/03973b2d723f7c3f7a4324f9040b827ffcbabcd0))
+
 ## [2.0.1](https://github.com/andrewdyer/react-permission-lock/compare/v2.0.0...v2.0.1) (2026-11-13)
 
 
